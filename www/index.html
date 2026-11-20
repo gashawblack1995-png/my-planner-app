@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>የእኔ አፕ | My App</title>
+  <style>
+    :root {
+      --primary: #15803d;
+      --primary-dark: #14532d;
+      --accent: #0284c7;
+      --danger: #dc2626;
+      --text: #0f172a;
+      --muted: #475569;
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --border: rgba(148, 163, 184, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 14px;
+      color: var(--text);
+      min-height: 100vh;
+      background-color: #d8f3dc;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.65) 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, rgba(186, 230, 253, 0.55) 0%, transparent 45%),
+        linear-gradient(180deg, rgba(20, 83, 45, 0.14) 0%, rgba(220, 252, 231, 0.78) 55%, rgba(224, 242, 254, 0.85) 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cg fill='none' stroke='%2315803d' stroke-opacity='0.11' stroke-width='1.5'%3E%3Cpath d='M30 190 C60 120, 120 90, 195 45'/%3E%3Cpath d='M85 130 C75 100, 95 75, 120 75 C115 105, 105 120, 85 130 Z' fill='%2315803d' fill-opacity='0.06'/%3E%3Cpath d='M135 95 C140 65, 165 55, 185 60 C175 85, 160 95, 135 95 Z' fill='%230284c7' fill-opacity='0.06'/%3E%3Ccircle cx='55' cy='60' r='26'/%3E%3Ccircle cx='185' cy='180' r='34'/%3E%3C/g%3E%3C/svg%3E");
+      background-attachment: fixed;
+    }
+
+    #welcomeScreen {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .welcome-box {
+      max-width: 440px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: 22px;
+      padding: 32px 22px;
+      box-shadow: 0 14px 35px rgba(20, 83, 45, 0.16);
+    }
+    .nature-emblem {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 14px auto;
+      border-radius: 22px;
+      background: linear-gradient(135deg, #15803d 0%, #0284c7 100%);
+      color: #ffffff;
+      font-size: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 18px rgba(21, 128, 61, 0.25);
+    }
+    .welcome-box h1 {
+      margin: 0 0 8px 0;
+      font-size: 24px;
+      color: var(--primary-dark);
+    }
+    .welcome-box p {
+      margin: 0 0 20px 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #mainApp {
+      display: none;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 65%, var(--accent) 100%);
+      color: #ffffff;
+      padding: 13px 16px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(20, 83, 45, 0.22);
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .dots-btn {
+      width: 42px;
+      height: 42px;
+      margin: 0;
+      padding: 0;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 24px;
+      font-weight: bold;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .dots-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    .header-titles h2 {
+      margin: 0;
+      font-size: 18px;
+      color: #ffffff;
+    }
+    .header-titles span {
+      font-size: 12px;
+      color: #dcfce7;
+    }
+
+    #leftMenu {
+      display: none;
+      position: fixed;
+      top: 74px;
+      left: 14px;
+      width: 270px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.24);
+      border: 1px solid #cbd5e1;
+      z-index: 99999;
+    }
+    .menu-btn {
+      width: 100%;
+      margin: 0;
+      padding: 13px 16px;
+      background: #ffffff;
+      color: #0f172a;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-bottom: 1px solid #f1f5f9;
+      border-radius: 0;
+      cursor: pointer;
+      display: block;
+    }
+    .menu-btn:last-child {
+      border-bottom: none;
+    }
+    .menu-btn:hover, .menu-btn.active {
+      background: #dcfce7;
+      color: var(--primary-dark);
+    }
+
+    .status-pill {
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #14532d;
+      background: rgba(220, 252, 231, 0.92);
+      border: 1px solid #86efac;
+      padding: 5px 14px;
+      border-radius: 999px;
+      width: fit-content;
+      margin: 0 auto 12px auto;
+    }
+
+    #notifAlertBox {
+      display: none;
+      background: #fef9c3;
+      border: 1px solid #facc15;
+      color: #713f12;
+      padding: 12px 14px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(202, 138, 4, 0.14);
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .section-view {
+      display: none;
+    }
+
+    h3 {
+      margin: 0 0 12px 0;
+      font-size: 17px;
+      color: var(--primary-dark);
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 8px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      font-size: 14px;
+      background: #ffffff;
+      color: var(--text);
+      font-family: inherit;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--primary) 0%, #16a34a 100%);
+      color: #ffffff;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.blue {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+    }
+    button.gray {
+      background: #64748b;
+    }
+    button.red {
+      background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+    }
+    button.small {
+      width: auto;
+      padding: 7px 12px;
+      font-size: 13px;
+      margin-top: 0;
+    }
+
+    .row-flex {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .row-flex > input, .row-flex > select {
+      flex: 1;
+      min-width: 120px;
+      margin-top: 0;
+    }
+
+    .scope-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .scope-tab-btn {
+      margin-top: 0;
+      padding: 9px 6px;
+      font-size: 13px;
+      background: #e2e8f0;
+      color: #1e293b;
+      border-radius: 10px;
+    }
+    .scope-tab-btn.active {
+      background: linear-gradient(135deg, var(--primary) 0%, #16a34a 100%);
+      color: #ffffff;
+    }
+
+    /* Planner የተከፋፈሉ ሳጥኖች */
+    .planner-slot-row {
+      display: flex;
+      align-items: stretch;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      background: #ffffff;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .planner-slot-label {
+      width: 112px;
+      flex-shrink: 0;
+      background: #dcfce7;
+      color: #14532d;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 10px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-right: 1px solid #cbd5e1;
+    }
+    .planner-slot-input {
+      flex: 1;
+      padding: 10px 12px;
+      font-size: 14px;
+      min-height: 46px;
+      outline: none;
+      background: #ffffff;
+      line-height: 1.4;
+    }
+    .planner-slot-input:focus {
+      background: #f0fdf4;
+    }
+    .planner-slot-input:empty:before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+    }
+
+    .cal-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .cal-dow {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--muted);
+      padding: 4px 0;
+    }
+    .cal-day {
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      padding: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .cal-day.selected {
+      border: 2px solid var(--accent);
+      background: #e0f2fe;
+    }
+    .cal-day.has-event {
+      background: #dcfce7;
+      border-color: #4ade80;
+    }
+    .event-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #15803d;
+      align-self: flex-end;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .sum-box {
+      padding: 11px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-weight: 800;
+    }
+    .sum-box span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .month-card {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+    }
+    .month-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .month-title {
+      font-weight: 800;
+      color: var(--primary-dark);
+      background: #dcfce7;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    .month-stats {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      margin: 8px 0;
+      padding: 6px 9px;
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+    }
+    td[contenteditable="true"], th[contenteditable="true"] {
+      background: #fffef2;
+    }
+
+    .note-item-card {
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+    }
+    .note-editor-area {
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 110px;
+      background: #ffffff;
+      margin-top: 8px;
+      outline: none;
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      margin-top: 8px;
+    }
+
+    body.printing-item > *:not(#printHost) {
+      display: none !important;
+    }
+    body.printing-item #printHost {
+      display: block !important;
+      padding: 16px;
+      background: #ffffff;
+      color: #0f172a;
+    }
+    #printHost {
+      display: none;
+    }
+    .print-doc-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #15803d;
+      color: #14532d;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="welcomeScreen">
+    <div class="welcome-box">
+      <div class="nature-emblem">🌿</div>
+      <h1 id="wTitle">እንኳን ደህና መጡ</h1>
+      <p id="wDesc">የግል እና የስራ ሂሳብ፣ ማስታወሻ፣ ዕቅድ እና ፕሮግራም በአንድ ቦታ</p>
+      <div class="row-flex" style="margin-bottom: 10px;">
+        <button type="button" class="small" onclick="setLang('am')">🇪🇹 አማርኛ</button>
+        <button type="button" class="blue small" onclick="setLang('en')">🇬🇧 English</button>
+      </div>
+      <button type="button" id="btnEnterApp" onclick="enterMainApp()">ይግቡ</button>
+    </div>
+  </div>
+
+  <div id="mainApp">
+    <div class="top-bar">
+      <button type="button" class="dots-btn" onclick="toggleLeftMenu()">⋮</button>
+      <div class="header-titles">
+        <h2 id="mainHeaderTitle">ገቢ ወጪ</h2>
+        <span id="mainHeaderSub">መስከረም - ጷግሜ</span>
+      </div>
+    </div>
+
+    <div id="leftMenu">
+      <button type="button" class="menu-btn" id="mFinance" onclick="openSection('finance')">💰 ገቢ ወጪ</button>
+      <button type="button" class="menu-btn" id="mNotes" onclick="openSection('notes')">📝 ማስታወሻ</button>
+      <button type="button" class="menu-btn" id="mPlans" onclick="openSection('plans')">🎯 ዕቅድ (Planner)</button>
+      <button type="button" class="menu-btn" id="mSchedule" onclick="openSection('schedule')">🗓 ፕሮግራም (Calendar)</button>
+      <button type="button" class="menu-btn" id="mMore" onclick="openSection('more')">⚙️ ሌሎች (Email / ቋንቋ)</button>
+    </div>
+
+    <div class="status-pill" id="savePill">Auto-Save ✓</div>
+    <div id="notifAlertBox"></div>
+
+    <!-- ክፍል 1: ገቢ ወጪ -->
+    <div id="sec_finance" class="section-view">
+      <div class="card">
+        <h3 id="hStartBal">መነሻ ገንዘብ</h3>
+        <div class="row-flex">
+          <input type="number" id="startBalInput" placeholder="መነሻ ብር">
+          <button type="button" class="small" id="btnSaveStart" onclick="saveStartBalance()">አስቀምጥ</button>
+        </div>
+        <div class="summary-grid">
+          <div class="sum-box"><span id="sStart">መነሻ</span><strong id="vStart">0</strong></div>
+          <div class="sum-box"><span id="sInc">ገቢ</span><strong id="vInc">0</strong></div>
+          <div class="sum-box"><span id="sExp">ወጪ</span><strong id="vExp">0</strong></div>
+          <div class="sum-box"><span id="sBal">ቀሪ</span><strong id="vBal">0</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 id="hAddTx">አዲስ መዝገብ</h3>
+        <div class="row-flex">
+          <select id="txMonth"></select>
+          <input type="number" id="txDay" min="1" max="31" placeholder="ቀን">
+        </div>
+        <input type="text" id="txReason" placeholder="ምክንያት">
+        <input type="number" id="txAmt" placeholder="መጠን">
+        <select id="txKind">
+          <option value="income" id="oInc">ገቢ (+)</option>
+          <option value="expense" id="oExp">ወጪ (-)</option>
+        </select>
+        <button type="button" id="btnSaveTx" onclick="addTx()">መዝግብ</button>
+      </div>
+
+      <div class="card">
+        <h3 id="hMonthsList">መስከረም - ጷግሜ</h3>
+        <div id="ethMonthsContainer"></div>
+      </div>
+    </div>
+
+    <!-- ክፍል 2: ማስታወሻ -->
+    <div id="sec_notes" class="section-view">
+      <div class="card">
+        <div class="row-flex" style="justify-content: space-between;">
+          <h3 id="hNotes" style="margin:0;">ማስታወሻ</h3>
+          <button type="button" class="small" id="btnAddNote" onclick="createNote()">+ Add</button>
+        </div>
+        <div id="notesList"></div>
+      </div>
+    </div>
+
+    <!-- ክፍል 3: ዕቅድ (ዕለታዊ በሰዓት፣ ሳምንታዊ በቀን፣ ወርሀዊ በሳምንት፣ ዓመታዊ በወር) -->
+    <div id="sec_plans" class="section-view">
+      <div class="card">
+        <h3 id="hPlans">ዕቅድ (Planner)</h3>
+
+        <div class="scope-tabs">
+          <button type="button" id="tab_daily" class="scope-tab-btn active" onclick="setPlanScope('daily')">ዕለታዊ</button>
+          <button type="button" id="tab_weekly" class="scope-tab-btn" onclick="setPlanScope('weekly')">ሳምንታዊ</button>
+          <button type="button" id="tab_monthly" class="scope-tab-btn" onclick="setPlanScope('monthly')">ወርሀዊ</button>
+          <button type="button" id="tab_yearly" class="scope-tab-btn" onclick="setPlanScope('yearly')">ዓመታዊ</button>
+        </div>
+
+        <p id="plannerScopeSubtitle" style="font-size:13px; font-weight:700; color:#14532d; margin:4px 0 8px 0;"></p>
+        <div id="plannerSlotsContainer"></div>
+      </div>
+    </div>
+
+    <!-- ክፍል 4: ፕሮግራም & ካላንደር -->
+    <div id="sec_schedule" class="section-view">
+      <div class="card">
+        <div class="row-flex" style="justify-content: space-between; margin-bottom:8px;">
+          <h3 id="hSchedule" style="margin:0;">ፕሮግራም & ካላንደር</h3>
+          <button type="button" class="small blue" id="btnEnableNotif" onclick="requestNotifPermission()">🔔 Notification ፍቀድ</button>
+        </div>
+
+        <div class="cal-header-bar">
+          <button type="button" class="small gray" onclick="changeCalMonth(-1)">◀</button>
+          <strong id="calMonthLabel" style="font-size:15px;"></strong>
+          <button type="button" class="small gray" onclick="changeCalMonth(1)">▶</button>
+        </div>
+        <div class="cal-grid" id="calDowRow"></div>
+        <div class="cal-grid" id="calDaysGrid"></div>
+
+        <h3 id="hAddProg" style="margin-top:16px;">አዲስ ፕሮግራም መዝግብ</h3>
+        <div class="row-flex">
+          <input type="date" id="progDate">
+          <select id="progNotifyMode">
+            <option value="same_day" id="optSameDay">በቀኑ Notification</option>
+            <option value="one_day_before" id="optDayBefore">ከቀኑ 1 ቀን ቀድሞ Notification</option>
+          </select>
+        </div>
+        <input type="text" id="progActivity" placeholder="የፕሮግራም ርዕስ / ስራ">
+        <button type="button" id="btnAddProg" onclick="addProgram()">ፕሮግራም መዝግብ</button>
+
+        <div id="programsList"></div>
+      </div>
+    </div>
+
+    <!-- ክፍል 5: ሌሎች -->
+    <div id="sec_more" class="section-view">
+      <div class="card">
+        <h3 id="hEmail">Email & Data Recovery</h3>
+        <input type="email" id="linkedEmailInput" placeholder="የእርስዎ Email (example@gmail.com)">
+        <button type="button" class="blue" id="btnLinkEmail" onclick="linkEmail()">Email አስተሳስር</button>
+        <p id="linkedEmailStatus" style="font-size:13px; color:#14532d; font-weight:700; margin:10px 0 6px 0;"></p>
+
+        <div class="row-flex">
+          <button type="button" class="small" id="btnMakeBackup" onclick="generateBackupString()">Backup ፍጠር</button>
+          <button type="button" class="blue small" id="btnSendMail" onclick="sendBackupByEmail()">በ Email ላክ</button>
+          <button type="button" class="gray small" id="btnRestoreData" onclick="restoreFromBackupString()">Recover አድርግ</button>
+        </div>
+        <textarea id="backupBox" placeholder="Backup ኮድ እዚህ ይወጣል ወይም Recover ለማድረግ እዚህ Paste ያድርጉ"></textarea>
+      </div>
+
+      <div class="card">
+        <h3 id="hLangReset">ቋንቋ እና Reset</h3>
+        <button type="button" class="blue" id="btnSwitchLangInside" onclick="toggleLang()">🇪🇹 አማርኛ / 🇬🇧 English</button>
+        <button type="button" class="red" id="btnResetAll" onclick="resetEverything()">Reset All</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="printHost"></div>
+
+  <script>
+    const STORAGE_KEY = "my_complete_app_v6";
+
+    const AM_MONTHS = [
+      { n: 1, name: "መስከረም", maxDays: 30 },
+      { n: 2, name: "ጥቅምት", maxDays: 30 },
+      { n: 3, name: "ህዳር", maxDays: 30 },
+      { n: 4, name: "ታኅሣሥ", maxDays: 30 },
+      { n: 5, name: "ጥር", maxDays: 30 },
+      { n: 6, name: "የካቲት", maxDays: 30 },
+      { n: 7, name: "መጋቢት", maxDays: 30 },
+      { n: 8, name: "ሚያዝያ", maxDays: 30 },
+      { n: 9, name: "ግንቦት", maxDays: 30 },
+      { n: 10, name: "ሰኔ", maxDays: 30 },
+      { n: 11, name: "ሐምሌ", maxDays: 30 },
+      { n: 12, name: "ነሐሴ", maxDays: 30 },
+      { n: 13, name: "ጷግሜ", maxDays: 6 }
+    ];
+
+    const EN_MONTHS = [
+      { n: 1, name: "January", maxDays: 31 },
+      { n: 2, name: "February", maxDays: 29 },
+      { n: 3, name: "March", maxDays: 31 },
+      { n: 4, name: "April", maxDays: 30 },
+      { n: 5, name: "May", maxDays: 31 },
+      { n: 6, name: "June", maxDays: 30 },
+      { n: 7, name: "July", maxDays: 31 },
+      { n: 8, name: "August", maxDays: 31 },
+      { n: 9, name: "September", maxDays: 30 },
+      { n: 10, name: "October", maxDays: 31 },
+      { n: 11, name: "November", maxDays: 30 },
+      { n: 12, name: "December", maxDays: 31 }
+    ];
+
+    const DAILY_HOURS = [
+      "06:00 AM", "07:00 AM", "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
+      "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM",
+      "06:00 PM", "07:00 PM", "08:00 PM", "09:00 PM", "10:00 PM"
+    ];
+
+    const TXT = {
+      am: {
+        wTitle: "እንኳን ደህና መጡ",
+        wDesc: "የግል እና የስራ ሂሳብ፣ ማስታወሻ፣ ዕቅድ እና ፕሮግራም በአንድ ቦታ",
+        enter: "ይግቡ",
+        mFinance: "💰 ገቢ ወጪ",
+        mNotes: "📝 ማስታወሻ",
+        mPlans: "🎯 ዕቅድ (Planner)",
+        mSchedule: "🗓 ፕሮግራም (Calendar)",
+        mMore: "⚙️ ሌሎች (Email / ቋንቋ)",
+        secTitles: {
+          finance: ["ገቢ ወጪ", "መስከረም - ጷግሜ"],
+          notes: ["ማስታወሻ", "Add & Insert"],
+          plans: ["ዕቅድ (Planner)", "ዕለታዊ • ሳምንታዊ • ወርሀዊ • ዓመታዊ"],
+          schedule: ["ፕሮግራም", "ካላንደር & Notification"],
+          more: ["ሌሎች", "Email / ቋንቋ"]
+        },
+        autoSave: "Auto-Save ✓",
+        saved: "ተቀምጧል ✓",
+        hStartBal: "መነሻ ገንዘብ",
+        startPh: "መነሻ ብር",
+        save: "አስቀምጥ",
+        sStart: "መነሻ",
+        sInc: "ገቢ",
+        sExp: "ወጪ",
+        sBal: "ቀሪ",
+        hAddTx: "አዲስ መዝገብ",
+        dayPh: "ቀን",
+        reasonPh: "ምክንያት",
+        amtPh: "መጠን",
+        inc: "ገቢ (+)",
+        exp: "ወጪ (-)",
+        incShort: "ገቢ",
+        expShort: "ወጪ",
+        record: "መዝግብ",
+        hMonthsList: "መስከረም - ጷግሜ",
+        monthPdf: "PDF",
+        del: "ሰርዝ",
+        hNotes: "ማስታወሻ",
+        addBtn: "+ Add",
+        insertFolder: "📂 Insert",
+        tableBtn: "+ Table",
+        addRowBtn: "+ ረድፍ",
+        addColBtn: "+ አምድ",
+        fontLbl: "Font:",
+        colorLbl: "Color:",
+        noteTitlePh: "የማስታወሻ ርዕስ",
+        hPlans: "ዕቅድ (Planner)",
+        tabDaily: "ዕለታዊ",
+        tabWeekly: "ሳምንታዊ",
+        tabMonthly: "ወርሀዊ",
+        tabYearly: "ዓመታዊ",
+        scopeSub: {
+          daily: "ዕለታዊ ዕቅድ — በሰዓት የተከፋፈለ",
+          weekly: "ሳምንታዊ ዕቅድ — በቀን የተከፋፈለ",
+          monthly: "ወርሀዊ ዕቅድ — በሳምንት የተከፋፈለ",
+          yearly: "ዓመታዊ ዕቅድ — በወር የተከፋፈለ"
+        },
+        slotPlaceholder: "ዕቅድ እዚህ ይጻፉ...",
+        weekDaysFull: ["ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "ዓርብ", "ቅዳሜ", "እሑድ"],
+        monthWeeks: ["1ኛ ሳምንት", "2ኛ ሳምንት", "3ኛ ሳምንት", "4ኛ ሳምንት"],
+        hSchedule: "ፕሮግራም & ካላንደር",
+        enableNotif: "🔔 Notification ፍቀድ",
+        hAddProg: "አዲስ ፕሮግራም መዝግብ",
+        sameDay: "በቀኑ Notification",
+        dayBefore: "ከቀኑ 1 ቀን ቀድሞ Notification",
+        progActPh: "የፕሮግራም ርዕስ / ስራ",
+        addProgBtn: "ፕሮግራም መዝግብ",
+        calMonths: ["ጥር/Jan","የካ/Feb","መጋ/Mar","ሚያ/Apr","ግን/May","ሰኔ/Jun","ሐም/Jul","ነሐ/Aug","መስ/Sep","ጥቅ/Oct","ህዳ/Nov","ታኅ/Dec"],
+        dows: ["እሑ", "ሰኞ", "ማክ", "ረቡ", "ሐሙ", "ዓር", "ቅዳ"],
+        notifBannerPrefix: "🔔 የፕሮግራም ማሳሰቢያ፦ ",
+        notifOnDayTag: "ዛሬ ነው",
+        notifBeforeTag: "ነገ ነው (1 ቀን ቀደም ብሎ)",
+        hEmail: "Email & Data Recovery",
+        emailPh: "የእርስዎ Email (example@gmail.com)",
+        linkEmail: "Email አስተሳስር",
+        linkedMsg: (em) => em ? `የተሳሰረ Email: ${em}` : "Email አልተሳሰረም",
+        makeBackup: "Backup ፍጠር",
+        sendMail: "በ Email ላክ",
+        recoverBtn: "Recover አድርግ",
+        backupPh: "Backup ኮድ እዚህ ይወጣል ወይም Recover ለማድረግ እዚህ Paste ያድርጉ",
+        hLangReset: "ቋንቋ እና Reset",
+        switchLang: "🇪🇹 አማርኛ / 🇬🇧 English",
+        resetAll: "Reset All",
+        alertAmt: "እባክህ ምክንያት እና መጠን አስገባ",
+        alertEmail: "እባክህ ትክክለኛ Email አስገባ",
+        backupCreated: "Backup ኮድ ተዘጋጅቷል።",
+        recoveredOk: "መረጃ በተሳካ ሁኔታ ተመልሷል (Recovered)!",
+        recoverFail: "የተሳሳተ Backup ኮድ ነው።",
+        notifGranted: "Notification ተፈቅዷል ✓"
+      },
+      en: {
+        wTitle: "Welcome",
+        wDesc: "Finances, notes, plans, and schedules in one place",
+        enter: "Enter",
+        mFinance: "💰 Income & Expense",
+        mNotes: "📝 Notes",
+        mPlans: "🎯 Planner",
+        mSchedule: "🗓 Schedule (Calendar)",
+        mMore: "⚙️ More (Email / Language)",
+        secTitles: {
+          finance: ["Income & Expense", "January - December"],
+          notes: ["Notes", "Add & Insert"],
+          plans: ["Planner", "Daily • Weekly • Monthly • Yearly"],
+          schedule: ["Schedule", "Calendar & Notifications"],
+          more: ["More", "Email / Language"]
+        },
+        autoSave: "Auto-Save ✓",
+        saved: "Saved ✓",
+        hStartBal: "Starting Balance",
+        startPh: "Starting amount",
+        save: "Save",
+        sStart: "Start",
+        sInc: "Income",
+        sExp: "Expense",
+        sBal: "Balance",
+        hAddTx: "New Entry",
+        dayPh: "Day",
+        reasonPh: "Reason / Description",
+        amtPh: "Amount",
+        inc: "Income (+)",
+        exp: "Expense (-)",
+        incShort: "Income",
+        expShort: "Expense",
+        record: "Save Entry",
+        hMonthsList: "January - December",
+        monthPdf: "PDF",
+        del: "Delete",
+        hNotes: "Notes",
+        addBtn: "+ Add",
+        insertFolder: "📂 Insert",
+        tableBtn: "+ Table",
+        addRowBtn: "+ Row",
+        addColBtn: "+ Col",
+        fontLbl: "Font:",
+        colorLbl: "Color:",
+        noteTitlePh: "Note title",
+        hPlans: "Planner",
+        tabDaily: "Daily",
+        tabWeekly: "Weekly",
+        tabMonthly: "Monthly",
+        tabYearly: "Yearly",
+        scopeSub: {
+          daily: "Daily Planner — Divided by Hour",
+          weekly: "Weekly Planner — Divided by Day",
+          monthly: "Monthly Planner — Divided by Week",
+          yearly: "Yearly Planner — Divided by Month"
+        },
+        slotPlaceholder: "Write plan here...",
+        weekDaysFull: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        monthWeeks: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        hSchedule: "Schedule & Calendar",
+        enableNotif: "🔔 Allow Notification",
+        hAddProg: "Add New Program",
+        sameDay: "Notify on the day",
+        dayBefore: "Notify 1 day before",
+        progActPh: "Program / Event title",
+        addProgBtn: "Save Program",
+        calMonths: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+        dows: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        notifBannerPrefix: "🔔 Program Reminder: ",
+        notifOnDayTag: "Today",
+        notifBeforeTag: "Tomorrow (1 day ahead)",
+        hEmail: "Email & Data Recovery",
+        emailPh: "Your Email (example@gmail.com)",
+        linkEmail: "Link Email",
+        linkedMsg: (em) => em ? `Linked Email: ${em}` : "No email linked",
+        makeBackup: "Create Backup",
+        sendMail: "Send via Email",
+        recoverBtn: "Recover Data",
+        backupPh: "Backup code appears here or paste code here to Recover",
+        hLangReset: "Language & Reset",
+        switchLang: "🇪🇹 አማርኛ / 🇬🇧 English",
+        resetAll: "Reset All",
+        alertAmt: "Please enter a reason and amount",
+        alertEmail: "Please enter a valid email",
+        backupCreated: "Backup code generated.",
+        recoveredOk: "Data recovered successfully!",
+        recoverFail: "Invalid backup code.",
+        notifGranted: "Notifications enabled ✓"
+      }
+    };
+
+    let app = {
+      entered: false,
+      lang: "am",
+      activeSection: "finance",
+      planScope: "daily",
+      startingBalance: 0,
+      transactions: [],
+      notes: [],
+      plannerSlots: {},
+      programs: [],
+      linkedEmail: ""
+    };
+
+    let calYear = new Date().getFullYear();
+    let calMonth = new Date().getMonth();
+    let selectedDateStr = new Date().toISOString().split("T")[0];
+
+    function tr() {
+      return TXT[app.lang] || TXT.am;
+    }
+
+    function getActiveMonths() {
+      return app.lang === "en" ? EN_MONTHS : AM_MONTHS;
+    }
+
+    function saveData() {
+      syncDomToState();
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(app));
+      } catch (e) {}
+      const pill = document.getElementById("savePill");
+      if (pill) {
+        pill.textContent = tr().saved;
+        setTimeout(() => { pill.textContent = tr().autoSave; }, 1200);
+      }
+    }
+
+    function syncDomToState() {
+      app.notes.forEach(n => {
+        const titleEl = document.getElementById("ntitle_" + n.id);
+        const bodyEl = document.getElementById("nbody_" + n.id);
+        if (titleEl) n.title = titleEl.value;
+        if (bodyEl) n.html = bodyEl.innerHTML;
+      });
+
+      document.querySelectorAll(".planner-slot-input").forEach(el => {
+        const k = el.getAttribute("data-plan-key");
+        if (k) {
+          if (!app.plannerSlots) app.plannerSlots = {};
+          app.plannerSlots[k] = el.innerText;
+        }
+      });
+    }
+
+    function setLang(l) {
+      app.lang = l;
+      applyTranslations();
+      saveData();
+    }
+
+    function toggleLang() {
+      app.lang = (app.lang === "am") ? "en" : "am";
+      applyTranslations();
+      saveData();
+    }
+
+    function enterMainApp() {
+      app.entered = true;
+      document.getElementById("welcomeScreen").style.display = "none";
+      document.getElementById("mainApp").style.display = "block";
+      openSection(app.activeSection || "finance");
+      checkProgramNotifications();
+      saveData();
+    }
+
+    function toggleLeftMenu() {
+      const m = document.getElementById("leftMenu");
+      m.style.display = (m.style.display === "block") ? "none" : "block";
+    }
+
+    function openSection(secName) {
+      syncDomToState();
+      app.activeSection = secName;
+      document.getElementById("leftMenu").style.display = "none";
+
+      ["finance", "notes", "plans", "schedule", "more"].forEach(s => {
+        const el = document.getElementById("sec_" + s);
+        if (el) el.style.display = (s === secName) ? "block" : "none";
+        const btn = document.getElementById("m" + s.charAt(0).toUpperCase() + s.slice(1));
+        if (btn) btn.classList.toggle("active", s === secName);
+      });
+
+      const pair = tr().secTitles[secName] || ["", ""];
+      document.getElementById("mainHeaderTitle").textContent = pair[0];
+      document.getElementById("mainHeaderSub").textContent = pair[1];
+      saveData();
+    }
+
+    function populateMonthDropdown() {
+      const months = getActiveMonths();
+      const sel = document.getElementById("txMonth");
+      const prev = parseInt(sel.value || "1", 10);
+      sel.innerHTML = "";
+      months.forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = String(m.n);
+        opt.textContent = `${m.n}. ${m.name}`;
+        sel.appendChild(opt);
+      });
+      const validPrev = months.some(m => m.n === prev) ? prev : 1;
+      sel.value = String(validPrev);
+    }
+
+    function applyTranslations() {
+      const t = tr();
+      document.documentElement.lang = app.lang;
+      document.getElementById("wTitle").textContent = t.wTitle;
+      document.getElementById("wDesc").textContent = t.wDesc;
+      document.getElementById("btnEnterApp").textContent = t.enter;
+
+      document.getElementById("mFinance").textContent = t.mFinance;
+      document.getElementById("mNotes").textContent = t.mNotes;
+      document.getElementById("mPlans").textContent = t.mPlans;
+      document.getElementById("mSchedule").textContent = t.mSchedule;
+      document.getElementById("mMore").textContent = t.mMore;
+
+      document.getElementById("hStartBal").textContent = t.hStartBal;
+      document.getElementById("startBalInput").placeholder = t.startPh;
+      document.getElementById("btnSaveStart").textContent = t.save;
+      document.getElementById("sStart").textContent = t.sStart;
+      document.getElementById("sInc").textContent = t.sInc;
+      document.getElementById("sExp").textContent = t.sExp;
+      document.getElementById("sBal").textContent = t.sBal;
+
+      document.getElementById("hAddTx").textContent = t.hAddTx;
+      populateMonthDropdown();
+      document.getElementById("txDay").placeholder = t.dayPh;
+      document.getElementById("txReason").placeholder = t.reasonPh;
+      document.getElementById("txAmt").placeholder = t.amtPh;
+      document.getElementById("oInc").textContent = t.inc;
+      document.getElementById("oExp").textContent = t.exp;
+      document.getElementById("btnSaveTx").textContent = t.record;
+      document.getElementById("hMonthsList").textContent = t.hMonthsList;
+
+      document.getElementById("hNotes").textContent = t.hNotes;
+      document.getElementById("btnAddNote").textContent = t.addBtn;
+
+      document.getElementById("hPlans").textContent = t.hPlans;
+      document.getElementById("tab_daily").textContent = t.tabDaily;
+      document.getElementById("tab_weekly").textContent = t.tabWeekly;
+      document.getElementById("tab_monthly").textContent = t.tabMonthly;
+      document.getElementById("tab_yearly").textContent = t.tabYearly;
+
+      document.getElementById("hSchedule").textContent = t.hSchedule;
+      document.getElementById("btnEnableNotif").textContent = t.enableNotif;
+      document.getElementById("hAddProg").textContent = t.hAddProg;
+      document.getElementById("optSameDay").textContent = t.sameDay;
+      document.getElementById("optDayBefore").textContent = t.dayBefore;
+      document.getElementById("progActivity").placeholder = t.progActPh;
+      document.getElementById("btnAddProg").textContent = t.addProgBtn;
+
+      document.getElementById("hEmail").textContent = t.hEmail;
+      document.getElementById("linkedEmailInput").placeholder = t.emailPh;
+      document.getElementById("btnLinkEmail").textContent = t.linkEmail;
+      document.getElementById("linkedEmailStatus").textContent = t.linkedMsg(app.linkedEmail);
+      document.getElementById("btnMakeBackup").textContent = t.makeBackup;
+      document.getElementById("btnSendMail").textContent = t.sendMail;
+      document.getElementById("btnRestoreData").textContent = t.recoverBtn;
+      document.getElementById("backupBox").placeholder = t.backupPh;
+
+      document.getElementById("hLangReset").textContent = t.hLangReset;
+      document.getElementById("btnSwitchLangInside").textContent = t.switchLang;
+      document.getElementById("btnResetAll").textContent = t.resetAll;
+
+      const pair = t.secTitles[app.activeSection] || ["", ""];
+      document.getElementById("mainHeaderTitle").textContent = pair[0];
+      document.getElementById("mainHeaderSub").textContent = pair[1];
+
+      renderFinance();
+      renderNotes();
+      renderPlannerSlots();
+      renderCalendar();
+      renderPrograms();
+      checkProgramNotifications();
+    }
+
+    function saveStartBalance() {
+      const val = parseFloat(document.getElementById("startBalInput").value);
+      app.startingBalance = isNaN(val) ? 0 : val;
+      renderFinance();
+      saveData();
+    }
+
+    function addTx() {
+      const months = getActiveMonths();
+      const m = parseInt(document.getElementById("txMonth").value, 10) || 1;
+      const mObj = months.find(x => x.n === m) || months[0];
+      const maxD = mObj.maxDays || 30;
+      const rawD = parseInt(document.getElementById("txDay").value, 10);
+      const d = (!isNaN(rawD) && rawD >= 1 && rawD <= maxD) ? rawD : 1;
+      const reason = document.getElementById("txReason").value.trim();
+      const amt = parseFloat(document.getElementById("txAmt").value);
+      const kind = document.getElementById("txKind").value;
+
+      if (!reason || isNaN(amt) || amt <= 0) {
+        alert(tr().alertAmt);
+        return;
+      }
+
+      app.transactions.push({ id: Date.now(), month: m, day: d, reason, amt, kind });
+      document.getElementById("txReason").value = "";
+      document.getElementById("txAmt").value = "";
+      renderFinance();
+      saveData();
+    }
+
+    function delTx(id) {
+      app.transactions = app.transactions.filter(x => x.id !== id);
+      renderFinance();
+      saveData();
+    }
+
+    function renderFinance() {
+      const t = tr();
+      const months = getActiveMonths();
+      let inc = 0, exp = 0;
+      app.transactions.forEach(x => {
+        if (x.kind === "income") inc += x.amt;
+        else exp += x.amt;
+      });
+      document.getElementById("vStart").textContent = app.startingBalance;
+      document.getElementById("vInc").textContent = inc;
+      document.getElementById("vExp").textContent = exp;
+      document.getElementById("vBal").textContent = app.startingBalance + inc - exp;
+
+      const container = document.getElementById("ethMonthsContainer");
+      let html = "";
+
+      months.forEach(mObj => {
+        const items = app.transactions
+          .filter(x => Number(x.month) === mObj.n)
+          .sort((a, b) => a.day - b.day);
+
+        let mInc = 0, mExp = 0;
+        items.forEach(x => {
+          if (x.kind === "income") mInc += x.amt;
+          else mExp += x.amt;
+        });
+
+        const mName = `${mObj.n}. ${mObj.name}`;
+        html += `<div class="month-card" id="mcard_${mObj.n}">
+          <div class="month-top">
+            <span class="month-title">${mName}</span>
+            <button type="button" class="small blue" onclick="printMonthPdf(${mObj.n})">${t.monthPdf}</button>
+          </div>
+          <div class="month-stats">${t.incShort}: ${mInc} | ${t.expShort}: ${mExp} | ${t.sBal}: ${mInc - mExp}</div>`;
+
+        if (items.length > 0) {
+          html += `<table><thead><tr><th>${t.dayPh}</th><th>${t.reasonPh}</th><th>${t.amtPh}</th><th></th></tr></thead><tbody>`;
+          items.forEach(it => {
+            html += `<tr>
+              <td>${it.day}</td>
+              <td>${it.reason}</td>
+              <td>${it.kind === "income" ? "+" : "-"}${it.amt}</td>
+              <td><button type="button" class="small red" onclick="delTx(${it.id})">X</button></td>
+            </tr>`;
+          });
+          html += `</tbody></table>`;
+        }
+        html += `</div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function printMonthPdf(monthNum) {
+      const months = getActiveMonths();
+      const mObj = months.find(x => x.n === monthNum) || months[0];
+      const title = `${monthNum}. ${mObj.name}`;
+      const card = document.getElementById("mcard_" + monthNum);
+      if (!card) return;
+      const clone = card.cloneNode(true);
+      clone.querySelectorAll("button").forEach(b => b.remove());
+      printCustomHtml(title, clone.outerHTML);
+    }
+
+    function createNote() {
+      syncDomToState();
+      const id = "n_" + Date.now();
+      app.notes.push({
+        id,
+        title: "",
+        html: "",
+        insertOpen: false,
+        fontFamily: "sans-serif",
+        textColor: "#0f172a"
+      });
+      renderNotes();
+      saveData();
+    }
+
+    function toggleInsertFolder(id) {
+      syncDomToState();
+      const n = app.notes.find(x => x.id === id);
+      if (!n) return;
+      n.insertOpen = !n.insertOpen;
+      renderNotes();
+      saveData();
+    }
+
+    function insertTableInNote(id) {
+      const editor = document.getElementById("nbody_" + id);
+      if (!editor) return;
+      const tbl = document.createElement("table");
+      tbl.innerHTML = `<thead><tr><th contenteditable="true"></th><th contenteditable="true"></th></tr></thead><tbody><tr><td contenteditable="true"></td><td contenteditable="true"></td></tr></tbody>`;
+      editor.appendChild(tbl);
+      saveData();
+    }
+
+    function addRowInNote(id) {
+      const editor = document.getElementById("nbody_" + id);
+      if (!editor) return;
+      const tables = editor.getElementsByTagName("table");
+      if (tables.length === 0) {
+        insertTableInNote(id);
+        return;
+      }
+      const lastTbl = tables[tables.length - 1];
+      const cols = lastTbl.rows[0].cells.length;
+      const tbody = lastTbl.getElementsByTagName("tbody")[0];
+      const row = tbody.insertRow();
+      for (let i = 0; i < cols; i++) {
+        const c = row.insertCell(i);
+        c.contentEditable = "true";
+      }
+      saveData();
+    }
+
+    function addColInNote(id) {
+      const editor = document.getElementById("nbody_" + id);
+      if (!editor) return;
+      const tables = editor.getElementsByTagName("table");
+      if (tables.length === 0) {
+        insertTableInNote(id);
+        return;
+      }
+      const lastTbl = tables[tables.length - 1];
+      for (let r = 0; r < lastTbl.rows.length; r++) {
+        const isHead = lastTbl.rows[r].parentNode.tagName === "THEAD";
+        const cell = isHead ? document.createElement("th") : document.createElement("td");
+        cell.contentEditable = "true";
+        lastTbl.rows[r].appendChild(cell);
+      }
+      saveData();
+    }
+
+    function changeNoteFont(id, fontVal) {
+      const n = app.notes.find(x => x.id === id);
+      if (n) n.fontFamily = fontVal;
+      const editor = document.getElementById("nbody_" + id);
+      if (editor) editor.style.fontFamily = fontVal;
+      saveData();
+    }
+
+    function changeNoteColor(id, colorVal) {
+      const n = app.notes.find(x => x.id === id);
+      if (n) n.textColor = colorVal;
+      const editor = document.getElementById("nbody_" + id);
+      if (editor) editor.style.color = colorVal;
+      saveData();
+    }
+
+    function printNotePdf(id) {
+      syncDomToState();
+      const n = app.notes.find(x => x.id === id);
+      if (!n) return;
+      const heading = (n.title && n.title.trim()) ? n.title.trim() : tr().hNotes;
+      const content = `<div style="font-family:${n.fontFamily || "sans-serif"}; color:${n.textColor || "#0f172a"};">${n.html || ""}</div>`;
+      printCustomHtml(heading, content);
+    }
+
+    function deleteNoteItem(id) {
+      syncDomToState();
+      app.notes = app.notes.filter(x => x.id !== id);
+      renderNotes();
+      saveData();
+    }
+
+    function renderNotes() {
+      const t = tr();
+      const list = document.getElementById("notesList");
+      list.innerHTML = "";
+
+      app.notes.forEach(n => {
+        const card = document.createElement("div");
+        card.className = "note-item-card";
+        card.innerHTML = `
+          <div class="row-flex">
+            <input type="text" id="ntitle_${n.id}" placeholder="${t.noteTitlePh}" value="${n.title || ""}" oninput="saveData()">
+            <button type="button" class="small blue" onclick="toggleInsertFolder('${n.id}')">${t.insertFolder}</button>
+            <button type="button" class="small" onclick="printNotePdf('${n.id}')">${t.monthPdf}</button>
+            <button type="button" class="small red" onclick="deleteNoteItem('${n.id}')">${t.del}</button>
+          </div>
+
+          <div id="insbox_${n.id}" style="display:${n.insertOpen ? "block" : "none"}; margin-top:10px; padding:10px; border-radius:10px; background:#f0fdf4; border:1px solid #86efac;">
+            <div class="row-flex">
+              <button type="button" class="small" onclick="insertTableInNote('${n.id}')">${t.tableBtn}</button>
+              <button type="button" class="small" onclick="addRowInNote('${n.id}')">${t.addRowBtn}</button>
+              <button type="button" class="small" onclick="addColInNote('${n.id}')">${t.addColBtn}</button>
+            </div>
+            <div class="row-flex" style="margin-top:8px;">
+              <label style="font-size:12px; font-weight:700;">${t.fontLbl}</label>
+              <select onchange="changeNoteFont('${n.id}', this.value)">
+                <option value="sans-serif" ${n.fontFamily === "sans-serif" ? "selected" : ""}>Sans</option>
+                <option value="serif" ${n.fontFamily === "serif" ? "selected" : ""}>Serif</option>
+                <option value="monospace" ${n.fontFamily === "monospace" ? "selected" : ""}>Mono</option>
+              </select>
+              <label style="font-size:12px; font-weight:700;">${t.colorLbl}</label>
+              <input type="color" value="${n.textColor || "#0f172a"}" style="width:56px; height:38px; padding:2px;" onchange="changeNoteColor('${n.id}', this.value)">
+            </div>
+          </div>
+
+          <div id="nbody_${n.id}" class="note-editor-area" contenteditable="true" style="font-family:${n.fontFamily || "sans-serif"}; color:${n.textColor || "#0f172a"};" oninput="saveData()">${n.html || ""}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    /* Planner: ዕለታዊ በሰዓት፣ ሳምንታዊ በቀን፣ ወርሀዊ በሳምንት፣ ዓመታዊ በወር */
+    function setPlanScope(scope) {
+      syncDomToState();
+      app.planScope = scope;
+      ["daily", "weekly", "monthly", "yearly"].forEach(s => {
+        const btn = document.getElementById("tab_" + s);
+        if (btn) btn.classList.toggle("active", s === scope);
+      });
+      renderPlannerSlots();
+      saveData();
+    }
+
+    function renderPlannerSlots() {
+      const t = tr();
+      const scope = app.planScope || "daily";
+      document.getElementById("plannerScopeSubtitle").textContent = t.scopeSub[scope] || "";
+
+      let rows = [];
+      if (scope === "daily") {
+        // ዕለታዊ -> በሰዓት
+        rows = DAILY_HOURS.map((hr, idx) => ({ key: `daily_${idx}`, label: hr }));
+      } else if (scope === "weekly") {
+        // ሳምንታዊ -> በቀን
+        rows = t.weekDaysFull.map((dayName, idx) => ({ key: `weekly_${idx}`, label: dayName }));
+      } else if (scope === "monthly") {
+        // ወርሀዊ -> በሳምንት
+        rows = t.monthWeeks.map((wkName, idx) => ({ key: `monthly_${idx}`, label: wkName }));
+      } else if (scope === "yearly") {
+        // ዓመታዊ -> በወር (መስከረም-ጷግሜ በአማርኛ / Jan-Dec በ English)
+        const activeM = getActiveMonths();
+        rows = activeM.map(m => ({ key: `yearly_${m.n}`, label: `${m.n}. ${m.name}` }));
+      }
+
+      const container = document.getElementById("plannerSlotsContainer");
+      container.innerHTML = rows.map(r => {
+        const val = (app.plannerSlots && app.plannerSlots[r.key]) ? app.plannerSlots[r.key] : "";
+        return `
+          <div class="planner-slot-row">
+            <div class="planner-slot-label">${r.label}</div>
+            <div class="planner-slot-input" contenteditable="true" data-plan-key="${r.key}" data-placeholder="${t.slotPlaceholder}" oninput="saveData()">${val}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function formatYmd(y, m, d) {
+      return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+    }
+
+    function changeCalMonth(delta) {
+      calMonth += delta;
+      if (calMonth < 0) {
+        calMonth = 11;
+        calYear--;
+      } else if (calMonth > 11) {
+        calMonth = 0;
+        calYear++;
+      }
+      renderCalendar();
+    }
+
+    function selectCalendarDay(ymd) {
+      selectedDateStr = ymd;
+      document.getElementById("progDate").value = ymd;
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const t = tr();
+      document.getElementById("calMonthLabel").textContent = `${t.calMonths[calMonth]} ${calYear}`;
+
+      const dowRow = document.getElementById("calDowRow");
+      dowRow.innerHTML = t.dows.map(d => `<div class="cal-dow">${d}</div>`).join("");
+
+      const firstDayIndex = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const eventDates = new Set(app.programs.map(p => p.date));
+
+      let cellsHtml = "";
+      for (let i = 0; i < firstDayIndex; i++) {
+        cellsHtml += `<div></div>`;
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        const ymd = formatYmd(calYear, calMonth, d);
+        const isSel = (ymd === selectedDateStr) ? "selected" : "";
+        const hasEv = eventDates.has(ymd) ? "has-event" : "";
+        cellsHtml += `<div class="cal-day ${isSel} ${hasEv}" onclick="selectCalendarDay('${ymd}')">
+          <span>${d}</span>
+          ${eventDates.has(ymd) ? `<span class="event-dot"></span>` : `<span></span>`}
+        </div>`;
+      }
+
+      document.getElementById("calDaysGrid").innerHTML = cellsHtml;
+    }
+
+    function addProgram() {
+      const dateVal = document.getElementById("progDate").value || selectedDateStr;
+      const notifyMode = document.getElementById("progNotifyMode").value;
+      const activity = document.getElementById("progActivity").value.trim();
+      if (!activity || !dateVal) return;
+
+      app.programs.push({
+        id: Date.now(),
+        date: dateVal,
+        notifyMode,
+        activity
+      });
+      document.getElementById("progActivity").value = "";
+      renderCalendar();
+      renderPrograms();
+      checkProgramNotifications();
+      saveData();
+    }
+
+    function delProgram(id) {
+      app.programs = app.programs.filter(p => p.id !== id);
+      renderCalendar();
+      renderPrograms();
+      checkProgramNotifications();
+      saveData();
+    }
+
+    function renderPrograms() {
+      const t = tr();
+      const box = document.getElementById("programsList");
+      const sorted = [...app.programs].sort((a, b) => a.date.localeCompare(b.date));
+      box.innerHTML = sorted.map(p => {
+        const modeText = (p.notifyMode === "one_day_before") ? t.dayBefore : t.sameDay;
+        return `
+          <div class="list-item">
+            <div>
+              <strong>${p.activity}</strong>
+              <div style="font-size:12px; color:#475569;">${p.date} • ${modeText}</div>
+            </div>
+            <button type="button" class="small red" onclick="delProgram(${p.id})">X</button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function requestNotifPermission() {
+      if ("Notification" in window) {
+        Notification.requestPermission().then(perm => {
+          if (perm === "granted") {
+            alert(tr().notifGranted);
+            checkProgramNotifications();
+          }
+        });
+      }
+    }
+
+    function checkProgramNotifications() {
+      const t = tr();
+      const now = new Date();
+      const todayStr = formatYmd(now.getFullYear(), now.getMonth(), now.getDate());
+
+      const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+      const tomorrowStr = formatYmd(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
+
+      const alerts = [];
+      app.programs.forEach(p => {
+        if (p.notifyMode === "same_day" && p.date === todayStr) {
+          alerts.push(`${p.activity} (${p.date} - ${t.notifOnDayTag})`);
+        } else if (p.notifyMode === "one_day_before" && p.date === tomorrowStr) {
+          alerts.push(`${p.activity} (${p.date} - ${t.notifBeforeTag})`);
+        }
+      });
+
+      const banner = document.getElementById("notifAlertBox");
+      if (alerts.length > 0 && app.entered) {
+        banner.style.display = "block";
+        banner.textContent = t.notifBannerPrefix + alerts.join(" | ");
+        if ("Notification" in window && Notification.permission === "granted") {
+          try { new Notification(t.hSchedule, { body: alerts.join("\n") }); } catch (e) {}
+        }
+      } else {
+        banner.style.display = "none";
+      }
+    }
+
+    function linkEmail() {
+      const em = document.getElementById("linkedEmailInput").value.trim();
+      if (!em || !em.includes("@")) {
+        alert(tr().alertEmail);
+        return;
+      }
+      app.linkedEmail = em;
+      document.getElementById("linkedEmailStatus").textContent = tr().linkedMsg(em);
+      saveData();
+    }
+
+    function generateBackupString() {
+      syncDomToState();
+      const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(app))));
+      document.getElementById("backupBox").value = encoded;
+      alert(tr().backupCreated);
+    }
+
+    function sendBackupByEmail() {
+      syncDomToState();
+      const em = app.linkedEmail || document.getElementById("linkedEmailInput").value.trim();
+      const encoded = document.getElementById("backupBox").value.trim() || btoa(unescape(encodeURIComponent(JSON.stringify(app))));
+      document.getElementById("backupBox").value = encoded;
+      const subject = encodeURIComponent("App Backup / Recovery");
+      const body = encodeURIComponent(encoded);
+      window.location.href = `mailto:${encodeURIComponent(em)}?subject=${subject}&body=${body}`;
+    }
+
+    function restoreFromBackupString() {
+      const rawCode = document.getElementById("backupBox").value.trim();
+      if (!rawCode) return;
+      try {
+        const parsed = JSON.parse(decodeURIComponent(escape(atob(rawCode))));
+        app = { ...app, ...parsed };
+        document.getElementById("startBalInput").value = app.startingBalance || 0;
+        document.getElementById("linkedEmailInput").value = app.linkedEmail || "";
+        applyTranslations();
+        saveData();
+        alert(tr().recoveredOk);
+      } catch (e) {
+        alert(tr().recoverFail);
+      }
+    }
+
+    function printCustomHtml(docTitle, innerHtml) {
+      const host = document.getElementById("printHost");
+      host.innerHTML = `<div class="print-doc-title">${docTitle}</div>${innerHtml}`;
+      const oldTitle = document.title;
+      document.title = docTitle;
+      document.body.classList.add("printing-item");
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove("printing-item");
+        host.innerHTML = "";
+        document.title = oldTitle;
+      }, 300);
+    }
+
+    function resetEverything() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      location.reload();
+    }
+
+    function init() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          app = { ...app, ...JSON.parse(saved) };
+        }
+      } catch (e) {}
+
+      document.getElementById("progDate").value = selectedDateStr;
+      document.getElementById("startBalInput").value = app.startingBalance || 0;
+      document.getElementById("linkedEmailInput").value = app.linkedEmail || "";
+      applyTranslations();
+
+      if (app.entered) {
+        document.getElementById("welcomeScreen").style.display = "none";
+        document.getElementById("mainApp").style.display = "block";
+        openSection(app.activeSection || "finance");
+        checkProgramNotifications();
+      }
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
